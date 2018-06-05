@@ -1,4 +1,19 @@
+@font-face {
+  font-family: "San Francisco";
+  font-weight: 400;
+  src: url("https://applesocial.s3.amazonaws.com/assets/styles/fonts/sanfrancisco/sanfranciscodisplay-regular-webfont.woff");
+}
+
+* {
+  font-family: "San Francisco", "Helvetica";
+}
+
 h1 {
-  color: green;
+  color: #8A64FF;
+}
+
+body {
   text-align: center;
+  margin: auto;
+  padding: 0 100px;
 }
