@@ -1,0 +1,17 @@
+scalar JSON
+scalar Date
+
+type User {
+  name: String
+  age: Int
+}
+
+type Query {
+  "Get user data"
+  getUser: User
+}
+
+type Mutation {
+  "Set user name"
+  setName(name: String!): User
+}

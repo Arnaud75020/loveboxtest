@@ -12,8 +12,37 @@ h1 {
   color: #8A64FF;
 }
 
+h4 {
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+
 body {
   text-align: center;
   margin: auto;
   padding: 0 100px;
+  display: flex;
+  justify-content: center;
+  background-color: #34495e;
+}
+
+ul {
+  margin-top: 15px;
+}
+
+li {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.container {
+  width: 800px;
+  padding: 0 100px 0 100px;
+  margin: 0;
+  background-color: white;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
 }
