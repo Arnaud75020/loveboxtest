@@ -47,6 +47,15 @@ export default () => {
         <span>Read message: </span>
         <p>{`Your message ${message}`}</p>
       </div>
+      <p>
+        <span>Message retrieved from the cache then fetched from the server: </span>
+        <span style={{ marginLeft: 10, marginRight: 10 }}>{message}</span>
+        {
+              (loading)
+                ? <span>Loading...</span>
+                : <button onClick={() => refetch()} type="button">Refetch</button>
+            }
+      </p>
       <div>
         <img
           alt="lovebox"
