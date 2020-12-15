@@ -2,16 +2,17 @@ scalar JSON
 scalar Date
 
 type Message {
-  name: String
-  age: Int
+  content: String
 }
 
 type Query {
-  "Get message"
-  getMessage: Message
+  "Get all messages"
+  getAllMessages: Message  
+  "Get new message"
+  getNewMessage: Message  
 }
 
 type Mutation {
-  "Set message"
-  setMessage(message: String!): Message
+  "Set new message"
+  setNewMessage(content: String!): Message
 }

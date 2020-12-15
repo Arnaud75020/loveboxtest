@@ -1,20 +1,20 @@
 // Fake database
-const MESSAGES = [
-  { message: '<hi>' },
+const MESSAGE = [
+  { message: '<your_message>' },
 ];
-const getMessage = () => MESSAGES[0];
+const getNewMessage = () => MESSAGE;
 
 export default {
   Query: {
-    getMessage: async () => {
-      const message = getMessage();
+    getNewMessage: async () => {
+      const message = getNewMessage();
       return message;
     },
   },
   Mutation: {
-    setMessage: async (_, { message }) => {
-      MESSAGES[0].message = message;
-      return getMessage();
+    setNewMessage: async (_, { message }) => {
+      MESSAGE = message;
+      return getNewMessage();
     },
   },
 };

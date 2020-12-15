@@ -4,58 +4,50 @@ import gql from 'graphql-tag';
 import LoveboxImage from './lovebox.svg';
 
 const GET_MESSAGE = gql`
-  query getMessage {
-    getMessage {
+  query getNewMessage {
+    getNewMessage {
       message
     }
   }
 `;
 
 const SET_MESSAGE = gql`
-  mutation setMessage($message: String!) {
-    setMessage(message: $message) {
+  mutation setNewMessage($message: String!) {
+    setNewMessage(message: $message) {
       message
     }
   }
 `;
 
 export default () => {
+
+console.log(message)
+
   const [messageInput, setMessageInput] = useState('');
   const {
-    data: { getMessage: { message = '<hi>' } = {} } = {},
-    refetch,
-    loading,
+    data: { getNewMessage: { message = '<your_message>' } = {} } = {},
   } = useQuery(
     GET_MESSAGE,
     { fetchPolicy: 'cache-and-network' },
   );
-  const [setMessage] = useMutation(SET_MESSAGE, {
-    update: (cache, { data: { setMessage: modifiedMessage } }) => {
-      cache.writeQuery({ query: GET_MESSAGE, data: { getMessage: modifiedMessage } });
+  const [setNewMessage] = useMutation(SET_MESSAGE, {
+    update: (cache, { data: { setNewMessage: modifiedMessage } }) => {
+      cache.writeQuery({ query: GET_MESSAGE, data: { getNewMessage: modifiedMessage } });
     },
   });
 
-
   return (
+
     <div className="container">
       <div className="send-area">
         <span>New message: </span>
         <textarea onChange={({ target: { value } }) => setMessageInput(value)} placeholder="write your message here" cols="40" rows="3" />
-        <button onClick={() => setMessage({ variables: { message: messageInput } })} type="button">Send message</button>
+        <button onClick={() => setNewMessage({ variables: { message: messageInput } })} type="button">Send message</button>
       </div>
       <div className="read-area">
         <span>Read message: </span>
         <p>{`Your message ${message}`}</p>
       </div>
-      <p>
-        <span>Message retrieved from the cache then fetched from the server: </span>
-        <span style={{ marginLeft: 10, marginRight: 10 }}>{message}</span>
-        {
-              (loading)
-                ? <span>Loading...</span>
-                : <button onClick={() => refetch()} type="button">Refetch</button>
-            }
-      </p>
       <div>
         <img
           alt="lovebox"
