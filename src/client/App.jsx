@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ApolloProvider } from '@apollo/react-hooks';
 import createApolloClient from './ApolloClient';
 import Home from './Home';
+import MyHome from './MyHome';
 
 export default () => {
   const [client, setClient] = useState(null);
@@ -15,7 +16,8 @@ export default () => {
   if (!client) return null;
   return (
     <ApolloProvider client={client}>
-      <Home />
+      {/* <Home /> */}
+      <MyHome />
     </ApolloProvider>
   );
 };
