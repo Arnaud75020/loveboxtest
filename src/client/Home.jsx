@@ -4,36 +4,36 @@ import gql from 'graphql-tag';
 import './app.css';
 import LoveboxImage from './lovebox.svg';
 
-const GET_USER = gql`
-  query getUser {
-    getUser {
-      name
+const GET_MESSAGE = gql`
+  query getMessage {
+    getMessage {
+      content
     }
   }
 `;
 
-const SET_NAME = gql`
-  mutation setName($name: String!) {
-    setName(name: $name) {
-      name
+const SEND_MESSAGE = gql`
+  mutation sendMessage($content: String!) {
+    sendMessage(content: $content) {
+      content
     }
   }
 `;
 
 export default () => {
   const [status, setStatus] = useState('WAITING');
-  const [nameInput, setNameInput] = useState('');
+  const [messageInput, setMessageInput] = useState('');
   const {
-    data: { getUser: { name = '<your_name>' } = {} } = {},
+    data: { getMessage: { content = '' } = {} } = {},
     refetch,
     loading,
   } = useQuery(
-    GET_USER,
+    GET_MESSAGE,
     { fetchPolicy: 'cache-and-network' },
   );
-  const [setName] = useMutation(SET_NAME, {
-    update: (cache, { data: { setName: modifiedUser } }) => {
-      cache.writeQuery({ query: GET_USER, data: { getUser: modifiedUser } });
+  const [setMessage] = useMutation(SEND_MESSAGE, {
+    update: (cache, { data: { sendMessage: modifiedMessage } }) => {
+      cache.writeQuery({ query: GET_MESSAGE, data: { getMessage: modifiedMessage } });
     },
   });
 
