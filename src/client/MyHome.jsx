@@ -4,37 +4,44 @@ import gql from 'graphql-tag';
 import LoveboxImage from './lovebox.svg';
 
 const GET_MESSAGE = gql`
-  query getNewMessage {
-    getNewMessage {
-      message
+  query getMessage {
+    getMessage {
+      content
     }
   }
 `;
 
-const SET_MESSAGE = gql`
-  mutation setNewMessage($message: String!) {
-    setNewMessage(message: $message) {
-      message
+const SEND_MESSAGE = gql`
+  mutation sendMessage($content: String!) {
+    sendMessage(content: $content) {
+      content
     }
   }
 `;
 
 export default () => {
-
-console.log(message)
-
+  const [status, setStatus] = useState('WAITING');
   const [messageInput, setMessageInput] = useState('');
   const {
-    data: { getNewMessage: { message = '<your_message>' } = {} } = {},
+    data: { getMessage: { content = '' } = {} } = {},
+    refetch,
+    loading,
   } = useQuery(
     GET_MESSAGE,
     { fetchPolicy: 'cache-and-network' },
   );
-  const [setNewMessage] = useMutation(SET_MESSAGE, {
-    update: (cache, { data: { setNewMessage: modifiedMessage } }) => {
-      cache.writeQuery({ query: GET_MESSAGE, data: { getNewMessage: modifiedMessage } });
+  const [setMessage] = useMutation(SEND_MESSAGE, {
+    update: (cache, { data: { sendMessage: modifiedMessage } }) => {
+      cache.writeQuery({ query: GET_MESSAGE, data: { getMessage: modifiedMessage } });
     },
   });
+
+  useEffect(() => {
+    fetch('/api/status')
+      .then(res => res.json())
+      .then(({ status: s }) => setStatus(s))
+      .catch(() => setStatus('ERROR'));
+  }, []);
 
   return (
 
@@ -42,11 +49,30 @@ console.log(message)
       <div className="send-area">
         <span>New message: </span>
         <textarea onChange={({ target: { value } }) => setMessageInput(value)} placeholder="write your message here" cols="40" rows="3" />
-        <button onClick={() => setNewMessage({ variables: { message: messageInput } })} type="button">Send message</button>
+        <button onClick={() => setMessage({ variables: { content: messageInput } })} type="button">Send new message</button>
       </div>
       <div className="read-area">
         <span>Read message: </span>
-        <p>{`Your message ${message}`}</p>
+        <p>{`Your message ${content}`}</p>
+      </div>
+      <div>
+        <div className="row">
+          <h4>GraphQL example</h4>
+          <h4
+            style={{ color: status === 'OK' ? '#2ecc71' : '#e74c3c', marginLeft: 10 }}
+          >
+            {`API status: ${status ? 'OK' : 'ERROR'}`}
+          </h4>
+        </div>
+        <p>
+          <span>Name retrieved from the cache then fetched from the server: </span>
+          <span style={{ marginLeft: 10, marginRight: 10 }}>{name}</span>
+          {
+              (loading)
+                ? <span>Loading...</span>
+                : <button onClick={() => refetch()} type="button">Refetch</button>
+            }
+        </p>
       </div>
       <div>
         <img

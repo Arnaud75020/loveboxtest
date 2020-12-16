@@ -127,8 +127,8 @@ export default () => {
           </p>
           <div>
             <span>New name: </span>
-            <input onChange={({ target: { value } }) => setNameInput(value)} />
-            <button onClick={() => setName({ variables: { name: nameInput } })} type="button">Set name</button>
+            <input onChange={({ target: { value } }) => setMessageInput(value)} />
+            <button onClick={() => setMessage({ variables: { content: messageInput } })} type="button">Set message</button>
           </div>
         </div>
         <div>

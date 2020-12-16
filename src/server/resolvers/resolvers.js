@@ -18,6 +18,7 @@ export default {
   Mutation: {
     sendMessage: async (_, { content }) => {
       MESSAGES[0].content = content;
+      MESSAGES[0].date = new Date().toLocaleString().replace(',', '').replace(/:.. /, ' ');
       return getMessage();
     },
   },
