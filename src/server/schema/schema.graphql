@@ -6,13 +6,11 @@ type Message {
 }
 
 type Query {
-  "Get all messages"
-  getAllMessages: Message  
   "Get new message"
-  getNewMessage: Message  
+  getMessage: Message
 }
 
 type Mutation {
-  "Set new message"
-  setNewMessage(content: String!): Message
+  "Send message"
+  sendMessage(content: String!): Message
 }
