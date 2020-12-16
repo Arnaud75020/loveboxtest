@@ -7,14 +7,16 @@ const GET_MESSAGE = gql`
   query getMessage {
     getMessage {
       content
+      date
     }
   }
 `;
 
 const SEND_MESSAGE = gql`
-  mutation sendMessage($content: String!) {
-    sendMessage(content: $content) {
+  mutation sendMessage($content: String!, $date: LocalDateTime) {
+    sendMessage(content: $content, date: $date) {
       content
+      date
     }
   }
 `;
@@ -23,7 +25,7 @@ export default () => {
   const [status, setStatus] = useState('WAITING');
   const [messageInput, setMessageInput] = useState('');
   const {
-    data: { getMessage: { content = '' } = {} } = {},
+    data: { getMessage: { content = '', date = '' } = {} } = {},
     refetch,
     loading,
   } = useQuery(
@@ -53,7 +55,7 @@ export default () => {
       </div>
       <div className="read-area">
         <span>Read message: </span>
-        <p>{`Your message ${content}`}</p>
+        <p>{`Your message: "${content}" received at "${date}"`}</p>
       </div>
       <div>
         <div className="row">

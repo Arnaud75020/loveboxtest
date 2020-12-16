@@ -2,6 +2,7 @@
 const MESSAGES = [
   {
     content: '',
+    date: '',
   },
 
 ];
