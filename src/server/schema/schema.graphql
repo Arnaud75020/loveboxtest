@@ -6,13 +6,9 @@ type Message {
   date: LocalDateTime
 }
 
-type MessageList {
-  list: [String!]
-}
-
 type Query {
   "Get new message"
-  getMessage: Message
+  getMessage: [Message]
 }
 
 type Mutation {

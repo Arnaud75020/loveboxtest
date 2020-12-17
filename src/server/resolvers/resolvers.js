@@ -1,4 +1,3 @@
-// Fake database
 const MESSAGES = [
   {
     content: '',
@@ -6,21 +5,18 @@ const MESSAGES = [
   },
 
 ];
-const getMessage = () => MESSAGES[0];
-
 
 export default {
   Query: {
-    getMessage: async () => {
-      const content = getMessage();
-      return content;
-    },
+    getMessage: () => MESSAGES,
   },
   Mutation: {
-    sendMessage: async (_, { content }) => {
-      MESSAGES[0].content = content;
-      MESSAGES[0].date = new Date().toLocaleString().replace(',', '').replace(/:.. /, ' ');
-      return getMessage();
+    sendMessage: (_, { content }) => {
+      // let newID = MESSAGES.length + 1
+      const newDate = new Date().toLocaleString().replace(',', '').replace(/:.. /, ' ');
+      const newMessage = { content, date: newDate };
+      MESSAGES.push(newMessage);
+      return newMessage;
     },
   },
 };

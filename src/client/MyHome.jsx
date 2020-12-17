@@ -38,6 +38,7 @@ export default () => {
     },
   });
 
+
   useEffect(() => {
     fetch('/api/status')
       .then(res => res.json())
@@ -68,7 +69,7 @@ export default () => {
         </div>
         <p>
           <span>Name retrieved from the cache then fetched from the server: </span>
-          <span style={{ marginLeft: 10, marginRight: 10 }}>{name}</span>
+          <span style={{ marginLeft: 10, marginRight: 10 }}>{content}</span>
           {
               (loading)
                 ? <span>Loading...</span>
