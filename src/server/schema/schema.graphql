@@ -1,17 +1,17 @@
 scalar JSON
-scalar Date
+scalar LocalDateTime
 
-type User {
-  name: String
-  age: Int
+type Message {
+  content: String
+  date: LocalDateTime
 }
 
 type Query {
-  "Get user data"
-  getUser: User
+  "Get new message"
+  getMessage: [Message]
 }
 
 type Mutation {
-  "Set user name"
-  setName(name: String!): User
+  "Send message"
+  sendMessage(content: String!, date: LocalDateTime): Message
 }
