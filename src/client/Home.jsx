@@ -8,16 +8,16 @@ import './app.css';
 const GET_MESSAGE = gql`
   query getMessage {
     getMessage {
-      content
+      msg
       date
     }
   }
 `;
 
 const SEND_MESSAGE = gql`
-  mutation sendMessage($content: String!, $date: LocalDateTime) {
-    sendMessage(content: $content, date: $date) {
-      content
+  mutation sendMessage($msg: String!) {
+    sendMessage(msg: $msg) {
+      msg
       date
     }
   }
@@ -27,6 +27,16 @@ const SEND_MESSAGE = gql`
 export default () => {
   const [status, setStatus] = useState('WAITING');
   const [messageInput, setMessageInput] = useState('');
+
+  const {
+    data,
+    refetch,
+    loading,
+  } = useQuery(
+    GET_MESSAGE,
+    { fetchPolicy: 'cache-and-network' },
+  );
+
 
   const [sendMessage] = useMutation(SEND_MESSAGE,
     {
@@ -42,12 +52,7 @@ export default () => {
       },
     });
 
-  const {
-    data,
-  } = useQuery(
-    GET_MESSAGE,
-    { fetchPolicy: 'cache-only' },
-  );
+  
 
   useEffect(() => {
     fetch('/api/status')
@@ -56,7 +61,7 @@ export default () => {
       .catch(() => setStatus('ERROR'));
   }, []);
 
-  console.log('data', data.getMessage);
+  console.log(data);
 
 
   return (
@@ -65,11 +70,11 @@ export default () => {
       <div className="send-area">
         <span>New message: </span>
         <textarea onChange={({ target: { value } }) => setMessageInput(value)} placeholder="write your message here" cols="40" rows="3" />
-        <button onClick={() => sendMessage({ variables: { content: messageInput } })} type="button">Send new message</button>
+        <button onClick={() => sendMessage({ variables: { msg: messageInput } })} type="button">Send new message</button>
       </div>
       <div className="read-area">
         <span>Read message: </span>
-        <p>{`Your message: "${content}" received at "${date}"`}</p>
+        {/* <p>{`Your message: "${msg}" received at "${date}"`}</p> */}
       </div>
       <div>
         <div className="row">
@@ -82,7 +87,7 @@ export default () => {
         </div>
         {/* <p>
           <span>Name retrieved from the cache then fetched from the server: </span>
-          <span style={{ marginLeft: 10, marginRight: 10 }}>{content}</span>
+          <span style={{ marginLeft: 10, marginRight: 10 }}>{msg}</span>
           {
               (loading)
                 ? <span>Loading...</span>

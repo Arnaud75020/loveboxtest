@@ -2,7 +2,7 @@ scalar JSON
 scalar LocalDateTime
 
 type Message {
-  content: String
+  msg: String
   date: LocalDateTime
 }
 
@@ -13,5 +13,7 @@ type Query {
 
 type Mutation {
   "Send message"
-  sendMessage(content: String!, date: LocalDateTime): Message
+  sendMessage(msg: String): Message!
 }
+
+
