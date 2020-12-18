@@ -52,40 +52,48 @@ export default () => {
     });
 
 
-  useEffect(() => {
-    fetch('/api/status')
-      .then(res => res.json())
-      .then(({ status: s }) => setStatus(s))
-      .catch(() => setStatus('ERROR'));
-  }, []);
+  const resetInput = () => {
+    document.getElementById('input').value = '';
+    setMessageInput('');
+  };
 
-  console.log(data.getMessages, loading);
+  // useEffect(() => {
+  //   fetch('/api/status')
+  //     .then(res => res.json())
+  //     .then(({ status: s }) => setStatus(s))
+  //     .catch(() => setStatus('ERROR'));
+  // }, []);
+
+  console.log(messageInput);
 
 
   return (
 
     <div className="container">
       <div className="send-area">
-        <span>New message: </span>
-        <textarea onChange={({ target: { value } }) => setMessageInput(value)} placeholder="write your message here" cols="40" rows="3" />
-        <button onClick={() => sendMessage({ variables: { msg: messageInput } })} type="button">Send new message</button>
+        <span>Send message: </span>
+        <textarea id="input" onChange={({ target: { value } }) => setMessageInput(value)} onFocus="this.value=''" placeholder="write your message here" cols="40" rows="2" />
+        <button onClick={() => resetInput()} type="button">New</button>
+        <button onClick={() => ((messageInput) ? sendMessage({ variables: { msg: messageInput } }) : null)} type="button">Send</button>
+
       </div>
       <div className="read-area">
         <span>Read message: </span>
-        {loading
-          ? <div>Loading...</div>
-          : (
-            <div>
-              {data.getMessages.map(({ id, msg, time }) => (
-                <div key={id}>
-                  <p>{`message: ${msg} received at ${time}`}</p>
-                </div>
+        <div className="message-area">
+          {loading
+            ? <div>Loading...</div>
+            : (
+              <ul className="list">
+                {
+              data.getMessages.map(({ id, msg, time }) => (
+                <li key={id}>{`message: ${msg} received at ${time}`}</li>
               ))}
-            </div>
-          )
+              </ul>
+            )
 }
+        </div>
       </div>
-      <div>
+      {/* <div>
         <div className="row">
           <h4>GraphQL example</h4>
           <h4
@@ -94,7 +102,7 @@ export default () => {
             {`API status: ${status ? 'OK' : 'ERROR'}`}
           </h4>
         </div>
-        {/* <p>
+        <p>
           <span>Name retrieved from the cache then fetched from the server: </span>
           <span style={{ marginLeft: 10, marginRight: 10 }}>{msg}</span>
           {
@@ -102,8 +110,8 @@ export default () => {
                 ? <span>Loading...</span>
                 : <button onClick={() => refetch()} type="button">Refetch</button>
             }
-        </p> */}
-      </div>
+        </p>
+      </div> */}
       <div>
         <img
           alt="lovebox"
