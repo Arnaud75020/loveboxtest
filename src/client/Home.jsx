@@ -23,6 +23,7 @@ const SEND_MESSAGE = gql`
   }
 `;
 
+
 export default () => {
   const [status, setStatus] = useState('WAITING');
   const [messageInput, setMessageInput] = useState('');
