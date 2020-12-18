@@ -2,13 +2,15 @@ scalar JSON
 scalar LocalDateTime
 
 type Message {
+  id: Int!
+  time: LocalDateTime
   msg: String
-  date: LocalDateTime
 }
 
+
 type Query {
-  "Get new message"
-  getMessage: [Message]
+  "Get messages"
+  getMessages: [Message]
 }
 
 type Mutation {

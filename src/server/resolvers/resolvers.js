@@ -1,21 +1,18 @@
-// const MESSAGES = [
-//   {
-//     content: '',
-//     date: '',
-//   },
-
-// ];
 const MESSAGES = [];
- 
+
 export default {
   Query: {
-    getMessage: () => MESSAGES,
+    getMessages: () => MESSAGES,
   },
   Mutation: {
+
     sendMessage: (_, { msg }) => {
-      // let newID = MESSAGES.length + 1
-      const newDate = new Date().toLocaleString().replace(',', '').replace(/:.. /, ' ');
-      const newMessage = { msg, date: newDate };
+      const newId = MESSAGES.length + 1;
+      const newMessage = {
+        id: newId,
+        time: new Date().toLocaleString().replace(',', '').replace(/:.. /, ' '),
+        msg,
+      };
       MESSAGES.push(newMessage);
       return newMessage;
     },

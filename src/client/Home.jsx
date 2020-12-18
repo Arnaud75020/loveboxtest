@@ -5,11 +5,12 @@ import LoveboxImage from './lovebox.svg';
 import './app.css';
 
 
-const GET_MESSAGE = gql`
-  query getMessage {
-    getMessage {
+const GET_MESSAGES = gql`
+  query getMessages {
+    getMessages {
+      id
+      time
       msg
-      date
     }
   }
 `;
@@ -18,22 +19,20 @@ const SEND_MESSAGE = gql`
   mutation sendMessage($msg: String!) {
     sendMessage(msg: $msg) {
       msg
-      date
     }
   }
 `;
 
 
 export default () => {
-  const [status, setStatus] = useState('WAITING');
+  // const [status, setStatus] = useState('WAITING');
   const [messageInput, setMessageInput] = useState('');
 
   const {
     data,
-    refetch,
     loading,
   } = useQuery(
-    GET_MESSAGE,
+    GET_MESSAGES,
     { fetchPolicy: 'cache-and-network' },
   );
 
@@ -41,18 +40,17 @@ export default () => {
   const [sendMessage] = useMutation(SEND_MESSAGE,
     {
       update: (cache, { data: sendMessage }) => {
-        const { getMessage } = cache.readQuery({
-          query: GET_MESSAGE,
+        const { getMessages } = cache.readQuery({
+          query: GET_MESSAGES,
         });
-        const newMessage = [...getMessage, sendMessage];
+        const newMessage = [...getMessages, sendMessage];
         cache.writeQuery({
-          query: GET_MESSAGE,
-          data: { getMessage: newMessage },
+          query: GET_MESSAGES,
+          data: { getMessages: newMessage },
         });
       },
     });
 
-  
 
   useEffect(() => {
     fetch('/api/status')
@@ -61,7 +59,7 @@ export default () => {
       .catch(() => setStatus('ERROR'));
   }, []);
 
-  console.log(data);
+  console.log(data.getMessages, loading);
 
 
   return (
@@ -74,7 +72,18 @@ export default () => {
       </div>
       <div className="read-area">
         <span>Read message: </span>
-        {/* <p>{`Your message: "${msg}" received at "${date}"`}</p> */}
+        {loading
+          ? <div>Loading...</div>
+          : (
+            <div>
+              {data.getMessages.map(({ id, msg, time }) => (
+                <div key={id}>
+                  <p>{`message: ${msg} received at ${time}`}</p>
+                </div>
+              ))}
+            </div>
+          )
+}
       </div>
       <div>
         <div className="row">
