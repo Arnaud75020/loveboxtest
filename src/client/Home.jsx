@@ -27,36 +27,35 @@ export default () => {
   const [status, setStatus] = useState('WAITING');
   const [messageInput, setMessageInput] = useState('');
 
-  const [sendMessage] = useMutation(SEND_MESSAGE, {
-    update: (cache, { data: sendMessage }) => {
-      const { getMessage } = cache.readQuery({
-        query: GET_MESSAGE,
-      });
-      const newMessage = [...getMessage, sendMessage];
-      cache.writeQuery({
-        query: GET_MESSAGE,
-        data: { getMessage: newMessage },
-      });
-    },
-  });
+  const [sendMessage] = useMutation(SEND_MESSAGE,
+    {
+      update: (cache, { data: sendMessage }) => {
+        const { getMessage } = cache.readQuery({
+          query: GET_MESSAGE,
+        });
+        const newMessage = [...getMessage, sendMessage];
+        cache.writeQuery({
+          query: GET_MESSAGE,
+          data: { getMessage: newMessage },
+        });
+      },
+    });
 
   const {
     data,
-    refetch,
-    loading,
   } = useQuery(
     GET_MESSAGE,
-    { fetchPolicy: 'cache-and-network' },
+    { fetchPolicy: 'cache-only' },
   );
 
-  // useEffect(() => {
-  //   fetch('/api/status')
-  //     .then(res => res.json())
-  //     .then(({ status: s }) => setStatus(s))
-  //     .catch(() => setStatus('ERROR'));
-  // }, []);
+  useEffect(() => {
+    fetch('/api/status')
+      .then(res => res.json())
+      .then(({ status: s }) => setStatus(s))
+      .catch(() => setStatus('ERROR'));
+  }, []);
 
-  console.log('data', data);
+  console.log('data', data.getMessage);
 
 
   return (
@@ -80,7 +79,7 @@ export default () => {
             {`API status: ${status ? 'OK' : 'ERROR'}`}
           </h4>
         </div>
-        <p>
+        {/* <p>
           <span>Name retrieved from the cache then fetched from the server: </span>
           <span style={{ marginLeft: 10, marginRight: 10 }}>{content}</span>
           {
@@ -88,7 +87,7 @@ export default () => {
                 ? <span>Loading...</span>
                 : <button onClick={() => refetch()} type="button">Refetch</button>
             }
-        </p>
+        </p> */}
       </div>
       <div>
         <img
