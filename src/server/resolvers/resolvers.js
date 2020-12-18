@@ -1,20 +1,22 @@
-// Fake database
-const USERS = [
-  { name: '<your_name>' },
+const MESSAGES = [
+  {
+    content: '',
+    date: '',
+  },
+
 ];
-const getUser = () => USERS[0];
 
 export default {
   Query: {
-    getUser: async () => {
-      const user = getUser();
-      return user;
-    },
+    getMessage: () => MESSAGES,
   },
   Mutation: {
-    setName: async (_, { name }) => {
-      USERS[0].name = name;
-      return getUser();
+    sendMessage: (_, { content }) => {
+      // let newID = MESSAGES.length + 1
+      const newDate = new Date().toLocaleString().replace(',', '').replace(/:.. /, ' ');
+      const newMessage = { content, date: newDate };
+      MESSAGES.push(newMessage);
+      return newMessage;
     },
   },
 };
