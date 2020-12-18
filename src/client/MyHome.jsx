@@ -26,19 +26,7 @@ const SEND_MESSAGE = gql`
 export default () => {
   const [status, setStatus] = useState('WAITING');
   const [messageInput, setMessageInput] = useState('');
-  const {
-    data: { getMessage: { content = '', date = '' } = {} },
-    refetch,
-    loading,
-  } = useQuery(
-    GET_MESSAGE,
-    { fetchPolicy: 'cache-and-network' },
-  );
-  // const [setMessage] = useMutation(SEND_MESSAGE, {
-  //   update: (cache, { data: { sendMessage: modifiedMessage } }) => {
-  //     cache.writeQuery({ query: GET_MESSAGE, data: { getMessage: modifiedMessage } });
-  //   },
-  // });
+
   const [setMessage] = useMutation(SEND_MESSAGE, {
     update: (cache, { data: sendMessage }) => {
       const { getMessage } = cache.readQuery({
@@ -51,6 +39,15 @@ export default () => {
       });
     },
   });
+
+  const {
+    data: { getMessage: { content = '', date = '' } = {} },
+    refetch,
+    loading,
+  } = useQuery(
+    GET_MESSAGE,
+    { fetchPolicy: 'cache-and-network' },
+  );
 
   useEffect(() => {
     fetch('/api/status')
