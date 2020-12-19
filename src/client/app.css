@@ -57,9 +57,14 @@ textarea {
 }
 
 .delete-btn {
-  background-color: #8A64FF;
-  color: white;
+  color: black;
+  background-color: none;
   cursor: pointer;
+  border-radius: 50%;
+}
+
+.delete-btn:hover {
+  background-color: lightgray;
 }
 
 .send-area, .read-area {

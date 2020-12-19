@@ -107,7 +107,7 @@ export default () => {
                         });
                       }}
                     >
-                      {isRed ? '' : 'x'}
+                      {isRed ? '' : 'X'}
                     </button>
                   </li>
                 </div>
