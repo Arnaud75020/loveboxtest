@@ -5,6 +5,7 @@ type Message {
   id: Int!
   time: LocalDateTime
   msg: String
+  isRed: Boolean
 }
 
 
@@ -16,6 +17,8 @@ type Query {
 type Mutation {
   "Send message"
   sendMessage(msg: String): Message!
+  "Update status"
+  updateStatus(id: Int, time: LocalDateTime, msg: String, isRed: Boolean): Message
 }
 
 
